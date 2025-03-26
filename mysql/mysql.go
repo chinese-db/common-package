@@ -1,4 +1,4 @@
-package mysqlpkg
+package mysql
 
 import (
 	"fmt"
@@ -32,7 +32,7 @@ func NewMysql(user string, password string, host string, port int, database stri
 	}
 }
 
-func (m *Mysql) MysqlINit() {
+func (m *Mysql) MysqlINit() *gorm.DB {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local", m.User, m.Password, m.Host, m.Port, m.Database)
 	once.Do(func() {
 		DB, err = gorm.Open(mysql.Open(dsn))
@@ -50,5 +50,5 @@ func (m *Mysql) MysqlINit() {
 
 		fmt.Println("mysql init success!!!")
 	})
-
+	return DB
 }

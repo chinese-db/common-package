@@ -13,12 +13,17 @@ type EsClient struct {
 	Host string
 }
 
-func (e *EsClient) EsInit(Host string) {
+func EsNewClient(host string) *EsClient {
+	return &EsClient{Host: host}
+}
+
+func (e *EsClient) EsInit() *elasticsearch.Client {
 	cfg := elasticsearch.Config{
 		Addresses: []string{
-			Host,
+			e.Host,
 		},
 		// ...
 	}
 	ES, err = elasticsearch.NewClient(cfg)
+	return ES
 }

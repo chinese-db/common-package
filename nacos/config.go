@@ -18,10 +18,12 @@ type Config struct {
 var Conf Config
 
 // LoadConfig 加载配置文件
-func LoadConfig(configPath string) error {
+func LoadConfig(configPath string) (Config, error) {
 	viper.SetConfigFile(configPath)
 	if err := viper.ReadInConfig(); err != nil {
-		return err
+		return Config{}, err
 	}
-	return viper.Unmarshal(&Conf)
+	//解析
+	err := viper.Unmarshal(&Conf)
+	return Conf, err
 }
