@@ -43,19 +43,25 @@ func InitNacos(configPath string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
+	// 获取配置内容
+	content, err := configClient.GetConfig(vo.ConfigParam{
+		DataId: nacos.Nacos.Dataid,
+		Group:  nacos.Nacos.Group,
+	})
+	if err != nil {
+		return "", err
+	}
 	//实时获取nacos配置
-	var con string
 	err = configClient.ListenConfig(vo.ConfigParam{
 		DataId: nacos.Nacos.Dataid,
 		Group:  nacos.Nacos.Group,
 		OnChange: func(namespace, group, dataId, data string) {
 			//fmt.Println("group:" + group + ", dataId:" + dataId + ", data:" + data)
-			con = data
+			content = data
 		},
 	})
 	if err != nil {
 		return "", err
 	}
-	return con, nil
+	return content, nil
 }
